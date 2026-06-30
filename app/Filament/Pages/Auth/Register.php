@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Pages\Auth;
 
-use App\Models\User;
 use App\Services\UserService;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\TextInput;
@@ -22,7 +21,7 @@ final class Register extends BaseRegister
             password: $data['password'],
         );
 
-        return User::query()->findOrFail($userDTO->id);
+        return $userDTO->toModel();
     }
 
     protected function getPasswordFormComponent(): Component
