@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Actions\ShortLink\GenerateUniqueShortCode;
 use App\Data\ShortLinkDTO;
 use App\Exceptions\NotFoundException;
 use App\Repositories\ShortLink\ShortLinkRepositoryContract;
-use Illuminate\Support\Str;
 
 final class ShortLinkService
 {
     public function __construct(
         private readonly ShortLinkRepositoryContract $shortLinkRepository,
+        private readonly GenerateUniqueShortCode $generateUniqueShortCode,
     ) {}
 
     public function create(string $userId, string $targetUrl): ShortLinkDTO
     {
         return $this->shortLinkRepository->create(new ShortLinkDTO(
             targetUrl: $targetUrl,
-            shortCode: $this->generateUniqueShortCode(),
+            shortCode: $this->generateUniqueShortCode->handle(),
             userId: $userId,
         ));
     }
@@ -33,14 +34,5 @@ final class ShortLinkService
         }
 
         $this->shortLinkRepository->delete($shortLink);
-    }
-
-    private function generateUniqueShortCode(): string
-    {
-        do {
-            $shortCode = Str::lower(Str::random(config('short-link.short_code_length')));
-        } while ($this->shortLinkRepository->existsByShortCode($shortCode));
-
-        return $shortCode;
     }
 }
