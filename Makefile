@@ -27,14 +27,8 @@ key:
 migrate:
 	$(DC) exec -T $(APP_SERVICE) php artisan migrate --force
 
-scribe:
-	$(DC) exec -T $(APP_SERVICE) php artisan scribe:generate
-
 shell:
 	$(DC) exec -it $(APP_SERVICE) bash
-
-seed:
-	$(DC) exec -T $(APP_SERVICE) php artisan db:seed
 
 test-up:
 	$(DC) down -v --remove-orphans

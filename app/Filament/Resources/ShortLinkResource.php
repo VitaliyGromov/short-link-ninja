@@ -62,7 +62,7 @@ final class ShortLinkResource extends Resource
                     ->url(fn(ShortLink $record): string => $record->target_url)
                     ->openUrlInNewTab()
                     ->searchable()
-                    ->limit(50),
+                    ->limit(config('short-link.length_of_original_url')),
                 Tables\Columns\TextColumn::make('short_code')
                     ->label('Короткая ссылка')
                     ->formatStateUsing(fn(string $state, ShortLink $record): string => $buildShortLinkUrl->handle($record))

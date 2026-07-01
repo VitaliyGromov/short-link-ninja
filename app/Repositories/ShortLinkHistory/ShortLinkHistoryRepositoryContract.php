@@ -17,4 +17,9 @@ interface ShortLinkHistoryRepositoryContract
      * @return list<ShortLinkVisitStatDTO>
      */
     public function countPerShortLinkForUser(string $userId): array;
+
+    /**
+     * @return list<ShortLinkHistoryDTO>
+     */
+    public function findByShortLinkIdForUser(string $shortLinkId, string $userId): array;
 }

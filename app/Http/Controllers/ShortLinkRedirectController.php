@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Services\ShortLinkRedirectService;
 use App\Exceptions\NotFoundException;
+use App\Services\ShortLinkRedirectService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -18,7 +18,7 @@ final class ShortLinkRedirectController extends Controller
     public function redirect(string $shortCode, Request $request): RedirectResponse
     {
         try {
-            $targetUrl = $this->shortLinkRedirectService->redirect(
+            $targetUrl = $this->shortLinkRedirectService->getRedirectUrl(
                 shortCode: $shortCode,
                 ipAddress: $request->ip() ?? '0.0.0.0',
             );

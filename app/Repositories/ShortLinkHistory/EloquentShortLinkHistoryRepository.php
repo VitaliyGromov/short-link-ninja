@@ -49,4 +49,23 @@ final readonly class EloquentShortLinkHistoryRepository implements ShortLinkHist
             ))
             ->all();
     }
+
+    public function findByShortLinkIdForUser(string $shortLinkId, string $userId): array
+    {
+        $shortLinkExists = ShortLink::query()
+            ->whereKey($shortLinkId)
+            ->where('user_id', $userId)
+            ->exists();
+
+        if (!$shortLinkExists) {
+            return [];
+        }
+
+        return ShortLinkHistory::query()
+            ->where('short_link_id', $shortLinkId)
+            ->orderByDesc('visited_at')
+            ->get()
+            ->map(fn(ShortLinkHistory $history): ShortLinkHistoryDTO => ShortLinkHistoryDTO::fromModel($history))
+            ->all();
+    }
 }

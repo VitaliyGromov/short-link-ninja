@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Data\ShortLinkDTO;
+use App\Exceptions\NotFoundException;
 use App\Repositories\ShortLink\ShortLinkRepositoryContract;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
 
 final class ShortLinkService
@@ -29,7 +29,7 @@ final class ShortLinkService
         $shortLink = $this->shortLinkRepository->findByIdAndUserId($id, $userId);
 
         if ($shortLink === null) {
-            throw new ModelNotFoundException;
+            throw new NotFoundException;
         }
 
         $this->shortLinkRepository->delete($shortLink);

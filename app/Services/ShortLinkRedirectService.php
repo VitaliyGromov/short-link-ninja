@@ -16,13 +16,13 @@ final class ShortLinkRedirectService
         private readonly ShortLinkHistoryRepositoryContract $shortLinkHistoryRepository,
     ) {}
 
-    public function redirect(string $shortCode, string $ipAddress): string
+    public function getRedirectUrl(string $shortCode, string $ipAddress): string
     {
         $shortLink = $this->shortLinkRepository->findByShortCode($shortCode);
 
         if ($shortLink === null) {
             throw new NotFoundException('Short link not found');
-        }   
+        }
 
         $this->shortLinkHistoryRepository->create(new ShortLinkHistoryDTO(
             shortLinkId: $shortLink->id,
