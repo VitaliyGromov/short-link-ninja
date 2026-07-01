@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Data\ShortLinkHistoryDTO;
+use App\Exceptions\NotFoundException;
 use App\Repositories\ShortLink\ShortLinkRepositoryContract;
 use App\Repositories\ShortLinkHistory\ShortLinkHistoryRepositoryContract;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 final class ShortLinkRedirectService
 {
@@ -21,8 +21,8 @@ final class ShortLinkRedirectService
         $shortLink = $this->shortLinkRepository->findByShortCode($shortCode);
 
         if ($shortLink === null) {
-            throw new ModelNotFoundException;
-        }
+            throw new NotFoundException('Short link not found');
+        }   
 
         $this->shortLinkHistoryRepository->create(new ShortLinkHistoryDTO(
             shortLinkId: $shortLink->id,

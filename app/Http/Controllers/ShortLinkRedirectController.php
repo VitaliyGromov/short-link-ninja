@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\ShortLinkRedirectService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\NotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -22,7 +22,7 @@ final class ShortLinkRedirectController extends Controller
                 shortCode: $shortCode,
                 ipAddress: $request->ip() ?? '0.0.0.0',
             );
-        } catch (ModelNotFoundException) {
+        } catch (NotFoundException) {
             abort(404);
         }
 
