@@ -22,12 +22,11 @@ final class ShortLinkRedirectService
             throw new NotFoundException('Short link not found');
         }
 
-            event(new Redirect(
-                shortLinkId: $shortLink->id,
-                ipAddress: $ipAddress,
-                visitedAt: now(),
-            ));
-        
+        event(new Redirect(
+            shortLinkId: $shortLink->id,
+            ipAddress: $ipAddress,
+            visitedAt: now(),
+        ));
 
         return $shortLink->targetUrl;
     }

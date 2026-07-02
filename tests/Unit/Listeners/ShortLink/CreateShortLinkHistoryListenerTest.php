@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Listeners\ShortLink;
 
-use App\Models\ShortLink;
 use App\Events\ShortLink\Redirect;
 use App\Listeners\ShortLink\CreateShortLinkHistoryListener;
+use App\Models\ShortLink;
 use Tests\TestCase;
 
-final  class CreateShortLinkHistoryListenerTest extends TestCase
+final class CreateShortLinkHistoryListenerTest extends TestCase
 {
     /**
      * A basic unit test example.
