@@ -37,7 +37,6 @@ test-up:
 	$(MAKE) install
 	$(MAKE) key
 	$(MAKE) migrate
-	$(MAKE) seed
 
 pint:
 	$(DC) exec -T $(APP_SERVICE) vendor/bin/pint
