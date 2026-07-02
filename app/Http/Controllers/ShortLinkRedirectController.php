@@ -18,7 +18,7 @@ final class ShortLinkRedirectController extends Controller
     public function redirect(string $shortCode, Request $request): RedirectResponse
     {
         try {
-            $targetUrl = $this->shortLinkRedirectService->getRedirectUrl(
+            $redirectUrl = $this->shortLinkRedirectService->redirect(
                 shortCode: $shortCode,
                 ipAddress: $request->ip() ?? '0.0.0.0',
             );
@@ -26,6 +26,6 @@ final class ShortLinkRedirectController extends Controller
             abort(404);
         }
 
-        return redirect()->away($targetUrl);
+        return redirect($redirectUrl);
     }
 }

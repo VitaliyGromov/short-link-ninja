@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-bookworm
+FROM php:8.4-cli-bookworm
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -6,8 +6,6 @@ RUN apt-get update \
         libicu-dev \
         libpq-dev \
         libzip-dev \
-        nodejs \
-        npm \
         unzip \
         $PHPIZE_DEPS \
     && docker-php-ext-install intl pdo_pgsql pgsql zip \
@@ -30,6 +28,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 COPY docker/php.ini /usr/local/etc/php/conf.d/custom.ini
 
-EXPOSE 9000
-
-CMD ["php-fpm"]
+CMD ["php", "artisan", "queue:work", "--tries=3", "--timeout=90"]

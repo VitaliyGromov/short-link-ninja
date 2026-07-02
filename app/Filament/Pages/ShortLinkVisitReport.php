@@ -10,6 +10,7 @@ use App\Data\ShortLinkVisitStatDTO;
 use App\Models\ShortLink;
 use App\Services\ShortLinkVisitReportService;
 use Filament\Actions\Action;
+use Illuminate\Support\Carbon;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -76,7 +77,9 @@ final class ShortLinkVisitReport extends Page implements HasActions, HasForms
                     'visits' => array_map(
                         static fn(ShortLinkHistoryDTO $visit): array => [
                             'ipAddress' => $visit->ipAddress,
-                            'visitedAt' => $visit->visitedAt?->format('d.m.Y H:i:s'),
+                            'visitedAt' => $visit->visitedAt !== null
+                                ? Carbon::parse($visit->visitedAt)->timezone(config('app.timezone'))->format('d.m.Y H:i:s')
+                                : null,
                         ],
                         $visits,
                     ),

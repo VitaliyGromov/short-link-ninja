@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services;
 
+use App\Events\ShortLink\Redirect;
 use App\Exceptions\NotFoundException;
 use App\Models\ShortLink;
 use App\Services\ShortLinkRedirectService;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 final class ShortLinkRedirectServiceTest extends TestCase
@@ -23,8 +25,9 @@ final class ShortLinkRedirectServiceTest extends TestCase
     {
         $shortLink = ShortLink::factory()->create();
         $ipAddress = '127.0.0.1';
-        $redirectUrl = $this->shortLinkRedirectService->getRedirectUrl($shortLink->short_code, $ipAddress);
+        $redirectUrl = $this->shortLinkRedirectService->redirect($shortLink->short_code, $ipAddress);
         $this->assertEquals($shortLink->target_url, $redirectUrl);
+        Event::assertDispatched(Redirect::class);
     }
 
     public function test_get_redirect_url_not_found(): void
@@ -32,6 +35,7 @@ final class ShortLinkRedirectServiceTest extends TestCase
         $shortCode = 'not-found';
         $ipAddress = '127.0.0.1';
         $this->expectException(NotFoundException::class);
-        $this->shortLinkRedirectService->getRedirectUrl($shortCode, $ipAddress);
+        $this->shortLinkRedirectService->redirect($shortCode, $ipAddress);
+        Event::assertNotDispatched(Redirect::class);
     }
 }
